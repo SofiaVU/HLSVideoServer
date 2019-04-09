@@ -10,25 +10,7 @@ let fs = require('fs');
 let fse = require('fs-extra');
 let HLSServer = require('hls-server');
 
-/* Passport */
-let passport = require('passport');
-let BearerStrategy = require('passport-http-bearer').Strategy;
-passport.use(new BearerStrategy(
-    async function(token, done) {
-        let user = await User.findOne({where: {token: token}});
-
-        if (!user) {
-            return done(null, false);
-        }
-
-        return done(null, user, {scope: 'all'});
-    },
-));
-
 export let router = Router();
-
-//Authorizing requests
-router.use(passport.authenticate('bearer', {session: false}));
 
 router.post('/upload', async(req, res) => {
     if (!req.files) {
