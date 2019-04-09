@@ -1,71 +1,68 @@
-# React Boilerplate para IWEB
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Instrucciones
+## Available Scripts
 
-1. Instala [node.js](https://nodejs.org/es/download/) y [git](https://git-scm.com/downloads)
-2. Abre un terminal nuevo en tu ordenador y clona ESTE proyecto (`git clone https://github.com/sonsoleslp/react-iweb-boilerplate.git`)
-3. Se ha creado un nuevo directorio (`react-iweb-boilerplate`): accede a él(`cd react-iweb-boilerplate`)
-4. En github.com, crea con tu usario un nuevo repositorio para albergar tu proyecto. Ejemplo https://github.com/alumno/react-iweb
-5. Vuelve al terminal y cambia la remote URL por la del repo que has creado. Ejemplo `git remote set-url origin http://github.com/alumno/react-iweb.git`
-6. Ejecuta el comando `npm install`. Se instalarán todas las dependencias del proyecto en una nueva carpeta `node_modules`
-7. Arranca el servidor de desarrollo con `npm start`
-8. Si no se abre automáticamente, abre el navegador en la URL [http://localhost:8080](http://localhost:8080)
-9. Cuando acabes de desarrollar detén el servidor con `Control + C`.
-10. Sube tus cambios a tu repositorio con `git add .` , `git commit -m "First commit"`, `git push origin master`.
+In the project directory, you can run:
 
+### `npm start`
 
-## Comandos disponibles
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-- `npm start` - Arranca el servidor de desarrollo
-- `npm clean` - Borra la carpeta dist
-- `npm run production` - Empaqueta la aplicación en la carpeta `dist` lista para producción
-- `npm run lint` - Comprueba la limpieza y formato del código
-- `npm test` - Corre todos los tests
-- `npm run test:watch` - Corre todos los tests en modo watch
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
-## Desarrollo
+### `npm test`
 
-El código de los componentes de React desarrollado debe estar en la carpeta `/app/components` (puedes crear subcarpetas)
-Recuerda que la estructura básica de un componente de React es la siguiente:
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-```
-import React from 'react';
+### `npm run build`
 
-export default class MyComponent extends React.Component {
-  render() {
-    return (
-      <h1>Hello Wold!</h1>
-    );
-  }
-}
-```
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
 
-> No te olvides de importar el componente desde donde lo vayas a renderizar.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run eject`
 
-## Producción
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-Al ejecutar `npm run production`, todo el código que hemos desarrollado se empaquetará en un `bundle.js` único en la carpeta `dist`. Ese código nos permitirá renderizar nuestro proyecto como una web estática.
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-# Créditos
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-Boilerplate basado en [ES6 React boilerplate using Webpack](https://github.com/KleoPetroff/react-webpack-boilerplate)
-Tiene las siguientes funcionalidades posibles:
+## Learn More
 
-- [x] React 16.0.0
-- [x] ECMAScript 6 and JSX support
-- [x] React Router v4
-- [x] Component testing using [Enzyme](https://github.com/airbnb/enzyme) and [Jest](https://facebook.github.io/jest)
-- [x] Code Coverage
-- [x] Latest Webpack (v.3.6.0) and Webpack Dev Server (v.2.8.2) with Scope Hoisting enabled
-- [x] Hot Module Replacement using [react-hot-loader](https://github.com/gaearon/react-hot-loader)
-- [x] ES6 linting with continuous linting on file change
-- [x] SASS support
-- [x] Separate CSS stylesheets generation
-- [x] Automatic HTML generation
-- [x] Production Config
-- [x] Custom Babel Preset with Decorators, Class Properties, Rest/Spread operator support
-- [x] Export Separate Vendor Files
-- [ ] Redux
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+
+### Analyzing the Bundle Size
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+
+### Making a Progressive Web App
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+
+### Advanced Configuration
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+
+### Deployment
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
