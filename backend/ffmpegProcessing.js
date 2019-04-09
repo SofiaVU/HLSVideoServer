@@ -8,11 +8,12 @@ export async function processVideo(videoName, format, id) {
 
     let pathStreams = 'streams/' + id;
 
-    let pathPreview = 'public/previews/' + id;
+    let pathPreview = 'previews/' + id;
 
     if (fs.existsSync(pathStreams)) {
         return;
     }
+
 
     fs.mkdir(pathStreams, err => {
         console.log(err);
@@ -32,7 +33,11 @@ export async function processVideo(videoName, format, id) {
         "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080\n" +
         id + "_1080.m3u8";
 
-    fs.writeFile(pathStreams + "/playlist.m3u8", playlist);
+    fs.writeFile(pathStreams + "/playlist.m3u8", playlist, err =>{
+        console.log(err)
+    });
+
+
 
     let resolution360p = [
         '-vf scale=w=640:h=360:force_original_aspect_ratio=decrease',
