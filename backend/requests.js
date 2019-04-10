@@ -2,6 +2,7 @@ import {Router} from 'express';
 import {processVideo} from "./ffmpegProcessing";
 import {createServer} from 'http';
 import {ports} from "./server";
+import {Video} from "./models";
 
 
 

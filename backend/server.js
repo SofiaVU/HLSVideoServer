@@ -40,6 +40,9 @@ app.use(function(req, res, next) {
     next();
 });
 
+// DB
+
+
 
 //Router listening
 server.listen(port, function() {
