@@ -21,7 +21,7 @@ router.get('/loadtest', async(req, res) => {
 
 });
 
-router.get('/upload', async(req, res) => {
+router.post('/upload', async(req, res) => {
 
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
@@ -33,6 +33,12 @@ router.get('/upload', async(req, res) => {
 
     let name = req.sanitize(req.body.name);
 
+    let newVideo = await Video.create({
+        name: name,
+        port: undefined,
+
+    });
+
     res.status(200).send();
 
     file.mv('videos/' + file.name, async(err) => {
@@ -43,16 +49,67 @@ router.get('/upload', async(req, res) => {
 
         let processOk = await processVideo(metadata[1], metadata[3], newVideo.id);
 
-        if(processOk) {
-            res.send(200)
-            return
-        }
     });
 
     res.send(500)
 
 
 });
+
+// router.get('/play', async(req, res) => {
+//
+//     let video = await Video.findOne({where: {id: req.query.id}});
+//
+//     if (video.port !== null) {
+//         console.log(video.name + " played on " + video.port);
+//         res.send(JSON.stringify({
+//             port: video.port,
+//         }));
+//
+//         for (let item in ports) {
+//             if (ports[item].port === video.port) {
+//                 ports[item].listeners++;
+//                 return;
+//             }
+//         }
+//
+//     }
+//
+//
+//     let server = createServer();
+//
+//     let streaming = 'streams/' + video.id + '/playlist.m3u8';
+//
+//     new HLSServer(server, {
+//         path: '/play',     // Base URI to output HLS streams
+//         dir: streaming // Directory that input files are stored
+//     });
+//
+//     for (let item in ports) {
+//         if (ports[item].available) {
+//             ports[item].available = false;
+//             ports[item].server = server;
+//             ports[item].listeners = 1;
+//
+//             server.listen(ports[item].port);
+//             server.on('request', (req, res) => {
+//                 res.setHeader('Access-Control-Allow-Origin', '*');
+//             });
+//
+//             video.port = ports[item].port;
+//
+//             video.save();
+//
+//             res.send(JSON.stringify({
+//                 port: ports[item].port,
+//             }));
+//
+//             return;
+//         }
+//
+//     }
+//
+// });
 
 router.get('/play', async(req, res) => {
 
@@ -62,9 +119,11 @@ router.get('/play', async(req, res) => {
 
     };
 
+    console.log(video)
+
     let server = createServer();
 
-    let streaming = 'streams/' + '1' + '/playlist.m3u8';
+    let streaming = 'streams/' + video.id + '/playlist.m3u8';
 
     new HLSServer(server, {
         path: '/play',     // Base URI to output HLS streams
@@ -74,6 +133,21 @@ router.get('/play', async(req, res) => {
     server.listen (9000, ()=>{
         console.log("Listening")
     })
+    server.on('request', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+    });
 
+
+});
+
+router.get('/available_videos', async(req, res) => {
+
+    let videos = await Video.findAll({
+        attributes: ['id', 'name', 'port', 'status', 'createdAt'],
+    });
+
+    if (videos) {
+        res.status(200).send(videos);
+    }
 
 });

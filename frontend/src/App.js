@@ -1,28 +1,101 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Player from "./modules/Player";
+import Uploader from "./modules/Uploader";
+import Selector from "./modules/Selector";
+let querystring = require('querystring');
+
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+    constructor(props) {
+        super(props);
+
+        // Bindings for aux functions
+        this._uploadVideo = this._uploadVideo.bind(this);
+        this._setCurrentVideo = this._setCurrentVideo.bind(this);
+        this.componentDidMount = this.componentDidMount(this);
+
+        this.state = {
+            playingVideo: null,
+            availableVideos: null
+        }
+    }
+
+    async _uploadVideo(form) {
+
+        let uploadOk = await fetch("http://localhost:8000/upload", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+            },
+            body: form,
+        });
+
+        if (uploadOk) {
+            alert("Your video has been uploaded. It will be available soon!");
+        } else {
+            alert("Error while uploading. Try again");
+        }
+
+    }
+
+    async _setCurrentVideo(id) {
+
+        let params = {
+            id: id
+        };
+
+        params = querystring.stringify(params)
+
+        let video = await fetch ("http://localhost:8000/play?" + params, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+            },
+        });
+
+        if (video) {
+            console.log(video.json)
+            //HEREEEEEE
+        }
+
+
+
+        this.setState({
+            playingVideo: id
+        })
+
+    }
+
+    async componentDidMount() {
+        let videos = await fetch("http://localhost:8000/available_videos");
+
+        videos = await videos.json();
+
+        this.setState({
+            availableVideos: videos
+        });
+
+    }
+
+
+    render() {
+        return (
+            <div className="App">
+                <header>
+                    Yet to code
+                </header>
+
+                <Player playingVideo={this.state.playingVideo}/>
+                <Uploader uploadVideo={this._uploadVideo}/>
+
+                {this.state.availableVideos && <Selector availableVideos={this.state.availableVideos}
+                                                         setCurrentVideo={this._setCurrentVideo}/>}
+
+            </div>
+        );
+    }
 }
 
 export default App;
