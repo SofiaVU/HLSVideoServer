@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 
-let querystring = require('querystring');
 
 export default class Uploader extends React.Component {
 

@@ -56,16 +56,15 @@ class App extends Component {
         });
 
         if (video) {
-            console.log(video.json)
-            //HEREEEEEE
+
+            let videoJson = await video.json();
+            this.setState({
+                playingVideo: {
+                    id: id,
+                    port: videoJson.port
+                }
+            })
         }
-
-
-
-        this.setState({
-            playingVideo: id
-        })
-
     }
 
     async componentDidMount() {
@@ -87,7 +86,8 @@ class App extends Component {
                     Yet to code
                 </header>
 
-                <Player playingVideo={this.state.playingVideo}/>
+                {this.state.playingVideo && <Player playingVideo={this.state.playingVideo}/>}
+
                 <Uploader uploadVideo={this._uploadVideo}/>
 
                 {this.state.availableVideos && <Selector availableVideos={this.state.availableVideos}

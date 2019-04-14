@@ -1,19 +1,11 @@
 import React from 'react';
 import ReactHLS from 'react-hls';
-let querystring = require('querystring');
 
 export default class Player extends React.Component {
 
     render() {
 
-        let params = {
-            id: this.props.playingVideo
-        };
-
-        params = querystring.stringify(params)
-
-
-        let url = "http://localhost:9000" + "/play?"+params;
+        let url = "http://localhost:" + this.props.playingVideo.port + "/play";
 
         return (
             <div id={"playerWrapper"}>

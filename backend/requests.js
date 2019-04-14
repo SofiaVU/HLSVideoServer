@@ -132,6 +132,9 @@ router.get('/play', async(req, res) => {
 
     server.listen (9000, ()=>{
         console.log("Listening")
+        res.send(JSON.stringify({
+            port: 9000,
+        }));
     })
     server.on('request', (req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
