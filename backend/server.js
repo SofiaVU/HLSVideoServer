@@ -10,17 +10,19 @@ let app = express();
 export let server = createServer(app);
 let port = process.env.VIDEO_SERVER_PORT || '8000';
 
-//Available ports for streaming
-export let ports = [];
+//Available availablePorts for streaming
+export let availablePorts = [];
 
 for (var i = 8001; i < 8031; i++) {
-    ports.push({
+    availablePorts.push({
         port: i,
-        available: true,
         server: null,
         listeners: 0
     });
 }
+
+// Already in use ports
+export let usedPorts = []
 
 //Port
 app.set('port', port);

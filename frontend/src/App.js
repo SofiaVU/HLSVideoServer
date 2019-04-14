@@ -14,7 +14,9 @@ class App extends Component {
         // Bindings for aux functions
         this._uploadVideo = this._uploadVideo.bind(this);
         this._setCurrentVideo = this._setCurrentVideo.bind(this);
-        this.componentDidMount = this.componentDidMount(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this._removeClientFromVideo = this._removeClientFromVideo.bind(this);
+        this._getNewVideoPort = this._getNewVideoPort.bind(this);
 
         this.state = {
             playingVideo: null,
@@ -42,10 +44,45 @@ class App extends Component {
 
     async _setCurrentVideo(id) {
 
+        if (this.state.playingVideo) {
+            this._removeClientFromVideo();
+        }
+
+        let video = await this._getNewVideoPort(id);
+
+        this.setState({
+            playingVideo: {
+                id: id,
+                port: video.port
+            }
+        })
+
+    }
+
+    async _removeClientFromVideo() {
+
+        // Removing listener from current video
+        let removeClient = await fetch("http://localhost:8000/removeclient", {
+            method: "POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                port: this.state.playingVideo.port,
+                id: this.state.playingVideo.id
+            })
+        });
+
+        if(removeClient) {
+            console.log("Client removed");
+        }
+    }
+
+    async _getNewVideoPort(id) {
+
         let params = {
             id: id
         };
-
         params = querystring.stringify(params)
 
         let video = await fetch ("http://localhost:8000/play?" + params, {
@@ -56,15 +93,11 @@ class App extends Component {
         });
 
         if (video) {
-
             let videoJson = await video.json();
-            this.setState({
-                playingVideo: {
-                    id: id,
-                    port: videoJson.port
-                }
-            })
+            return videoJson;
         }
+
+
     }
 
     async componentDidMount() {

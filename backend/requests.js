@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {processVideo} from "./ffmpegProcessing";
 import {createServer} from 'http';
-import {ports} from "./server";
+import {availablePorts, usedPorts} from "./server";
 import {Video} from "./models";
 
 
@@ -13,13 +13,6 @@ let fse = require('fs-extra');
 let HLSServer = require('hls-server');
 
 export let router = Router();
-
-
-router.get('/loadtest', async(req, res) => {
-
-    let processOk =  processVideo('t', 'mp4', 1);
-
-});
 
 router.post('/upload', async(req, res) => {
 
@@ -56,70 +49,9 @@ router.post('/upload', async(req, res) => {
 
 });
 
-// router.get('/play', async(req, res) => {
-//
-//     let video = await Video.findOne({where: {id: req.query.id}});
-//
-//     if (video.port !== null) {
-//         console.log(video.name + " played on " + video.port);
-//         res.send(JSON.stringify({
-//             port: video.port,
-//         }));
-//
-//         for (let item in ports) {
-//             if (ports[item].port === video.port) {
-//                 ports[item].listeners++;
-//                 return;
-//             }
-//         }
-//
-//     }
-//
-//
-//     let server = createServer();
-//
-//     let streaming = 'streams/' + video.id + '/playlist.m3u8';
-//
-//     new HLSServer(server, {
-//         path: '/play',     // Base URI to output HLS streams
-//         dir: streaming // Directory that input files are stored
-//     });
-//
-//     for (let item in ports) {
-//         if (ports[item].available) {
-//             ports[item].available = false;
-//             ports[item].server = server;
-//             ports[item].listeners = 1;
-//
-//             server.listen(ports[item].port);
-//             server.on('request', (req, res) => {
-//                 res.setHeader('Access-Control-Allow-Origin', '*');
-//             });
-//
-//             video.port = ports[item].port;
-//
-//             video.save();
-//
-//             res.send(JSON.stringify({
-//                 port: ports[item].port,
-//             }));
-//
-//             return;
-//         }
-//
-//     }
-//
-// });
-
 router.get('/play', async(req, res) => {
 
-    let video = {
-        id: req.query.id,
-        name: 'test',
-
-    };
-
-    console.log(video)
+    let video = await Video.findOne({where: {id: req.query.id}});
 
     let server = createServer();
 
@@ -130,18 +62,78 @@ router.get('/play', async(req, res) => {
         dir: streaming // Directory that input files are stored
     });
 
-    server.listen (9000, ()=>{
-        console.log("Listening")
+    if (video.port) {
+        console.log("Exists");
         res.send(JSON.stringify({
-            port: 9000,
+            port: video.port,
         }));
-    })
+
+    } else {
+        console.log("No exists");
+        let port = availablePorts.shift();
+        port.server = server;
+        port.listeners++;
+
+        video.port = port.port;
+
+        server.listen (port.port, ()=>{
+            console.log("Listening");
+
+            res.send(JSON.stringify({
+                port: port.port,
+            }));
+            video.save();
+
+            usedPorts.push(port);
+
+
+        })
+
+    }
+
     server.on('request', (req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
     });
 
-
 });
+
+
+router.post('/removeclient', async (req, res) => {
+
+    let port = req.sanitize(req.body.port);
+    let id = req.sanitize(req.body.id);
+
+    let video = await Video.findOne({where: {id: id}});
+
+    for (let up in usedPorts) {
+        if (usedPorts[up].port === parseInt(port)) {
+            usedPorts[up].listeners--;
+
+            if (usedPorts[up].listeners < 1) {
+
+                video.port = null;
+
+                video.save();
+
+                usedPorts[up].server.close((err) => {
+                    console.log(err)
+                });
+
+                usedPorts[up].server = null;
+
+                availablePorts.push(usedPorts[up]);
+
+                usedPorts.splice(up,1);
+
+            }
+        }
+
+
+    }
+
+    res.status(200).send();
+
+})
 
 router.get('/available_videos', async(req, res) => {
 

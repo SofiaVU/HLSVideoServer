@@ -30,4 +30,17 @@ sequelize.sync()
 
 
 
+// Reseting all video ports
+Video.findAll({
+    where: {
+        port: {
+            [Sequelize.Op.ne]: null
+        }
+    }
+}).then((videos) => {
 
+    for (let index in videos){
+        videos[index].port =null
+        videos[index].save()
+    }
+})
