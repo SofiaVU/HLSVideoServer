@@ -55,12 +55,14 @@ router.get('/play', async(req, res) => {
 
     let server = createServer();
 
-    let streaming = 'streams/' + video.id + '/playlist.m3u8';
+    let streaming = 'streams/' + video.id + '/' + video.id + '_1080.m3u8';
+    console.log(streaming)
 
     new HLSServer(server, {
         path: '/play',     // Base URI to output HLS streams
         dir: streaming // Directory that input files are stored
     });
+
 
     if (video.port) {
         console.log("Exists");
