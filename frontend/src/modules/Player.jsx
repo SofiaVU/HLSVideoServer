@@ -5,7 +5,7 @@ export default class Player extends React.Component {
 
     render() {
 
-        let url = "http://localhost:" + this.props.playingVideo.port + "/play";
+        let url = "http://localhost:" + this.props.playingVideo.port.q1080+ "/play";
 
         return (
             <div id={"playerWrapper"}>

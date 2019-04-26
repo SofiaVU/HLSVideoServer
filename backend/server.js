@@ -13,7 +13,7 @@ let port = process.env.VIDEO_SERVER_PORT || '8000';
 //Available availablePorts for streaming
 export let availablePorts = [];
 
-for (var i = 8001; i < 8031; i++) {
+for (var i = 8001; i < 8101; i++) {
     availablePorts.push({
         port: i,
         server: null,

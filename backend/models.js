@@ -11,7 +11,7 @@ export let Video = sequelize.define('video', {
         validate: {notEmpty: {msg: "Name of the video must not be empty."}},
     },
     port: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
     },
     status: {
         type: Sequelize.STRING,

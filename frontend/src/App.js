@@ -58,7 +58,7 @@ class App extends Component {
         this.setState({
             playingVideo: {
                 id: id,
-                port: video.port
+                port: video
             }
         })
 
