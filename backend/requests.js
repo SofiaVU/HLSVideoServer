@@ -160,3 +160,26 @@ router.get('/available_videos', async(req, res) => {
     }
 
 });
+
+router.post('/delete_video', async(req, res) => {
+    let id = req.sanitize(req.body.id);
+
+    let video = await Video.findOne({where: {id: id}});
+
+    let destroyOk = await video.destroy();
+
+    fse.remove('streams/' + video.id, err => {
+
+        if (!err) {
+            fse.remove('public/previews/' + video.id, err => {
+                if (!err && destroyOk) {
+                    /*res.redirect('http://' + process.env.WEBAPP_SERVER_URL + ':' + process.env.WEBAPP_SERVER_PORT
+                        + '/video?delete=ok');*/
+                    res.status(200).send();
+                }
+            });
+        }
+
+    });
+
+})
