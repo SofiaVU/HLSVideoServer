@@ -16,8 +16,10 @@ export default class Player extends React.Component {
 
     render() {
         return (
-            <div className={"videoPreview"} onClick={this._setCurrentVideo}>
-                {this.props.video.id}
+            <div class="grid-item">
+                <div className={"videoPreview"} onClick={this._setCurrentVideo}>
+                    {this.props.video.name}
+                </div>
             </div>
         );
 

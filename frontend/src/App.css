@@ -1,3 +1,41 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  font-family: Helvetica;
+  }
+
+  li {
+  float: left;
+  }
+
+  li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  }
+
+  li a:hover {
+  background-color: #111;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #DCDCDC;
+    padding: 10px;
+  }
+  .grid-item {
+    background-color: rgba(220, 220, 220, 0.8);
+    border: 1px solid rgba(169,169,169, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+
 .App {
   text-align: center;
 }

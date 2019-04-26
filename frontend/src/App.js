@@ -116,15 +116,25 @@ class App extends Component {
         return (
             <div className="App">
                 <header>
-                    Yet to code
+                    <ul>
+                        <li><a class="active" href="#home">Home</a></li>
+                        <li><a href="#news">Videos</a></li>
+                        <li><a href="#contact">Team</a></li>
+                        <li><a href="#about">About HLS</a></li>
+                    </ul>
                 </header>
+                
 
                 {this.state.playingVideo && <Player playingVideo={this.state.playingVideo}/>}
-
+                
                 <Uploader uploadVideo={this._uploadVideo}/>
 
-                {this.state.availableVideos && <Selector availableVideos={this.state.availableVideos}
-                                                         setCurrentVideo={this._setCurrentVideo}/>}
+                {this.state.availableVideos && 
+                    <div class="grid-container">
+                        <Selector availableVideos={this.state.availableVideos}
+                            setCurrentVideo={this._setCurrentVideo}/>
+                    </div>
+                }
 
             </div>
         );
