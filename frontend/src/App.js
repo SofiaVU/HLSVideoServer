@@ -95,7 +95,7 @@ class App extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                port: this.state.playingVideo.port,
+                port: JSON.stringify(this.state.playingVideo.port),
                 id: this.state.playingVideo.id
             })
         });

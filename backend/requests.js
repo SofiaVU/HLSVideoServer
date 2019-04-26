@@ -6,7 +6,6 @@ import {Video} from "./models";
 import {json} from "sequelize";
 
 
-
 let express = require('express');
 
 let fs = require('fs');
@@ -15,7 +14,7 @@ let HLSServer = require('hls-server');
 
 export let router = Router();
 
-router.post('/upload', async(req, res) => {
+router.post('/upload', async (req, res) => {
 
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
@@ -35,7 +34,7 @@ router.post('/upload', async(req, res) => {
 
     res.status(200).send();
 
-    file.mv('videos/' + file.name, async(err) => {
+    file.mv('videos/' + file.name, async (err) => {
         if (err) {
             console.log(err);
             return;
@@ -50,12 +49,11 @@ router.post('/upload', async(req, res) => {
 
 });
 
-router.get('/play', async(req, res) => {
+router.get('/play', async (req, res) => {
 
     let video = await Video.findOne({where: {id: req.query.id}});
 
     if (video.port !== null) {
-        console.log(JSON.parse(video.port))
         console.log("Exists");
         res.send(video.port);
         return
@@ -74,7 +72,6 @@ router.get('/play', async(req, res) => {
     let streaming_480 = 'streams/' + video.id + '/' + video.id + '_480.m3u8';
     let streaming_720 = 'streams/' + video.id + '/' + video.id + '_720.m3u8';
     let streaming_1080 = 'streams/' + video.id + '/' + video.id + '_1080.m3u8';
-
 
 
     new HLSServer(auto, {
@@ -133,23 +130,23 @@ router.get('/play', async(req, res) => {
     let ports_stg = JSON.stringify(ports);
     video.port = ports_stg;
 
-    auto.listen (port_auto.port, ()=>{
+    auto.listen(port_auto.port, () => {
         console.log("Listening: auto");
     });
 
-    q360.listen (port_360.port, ()=>{
+    q360.listen(port_360.port, () => {
         console.log("Listening: 360");
     });
 
-    q480.listen (port_480.port, ()=>{
+    q480.listen(port_480.port, () => {
         console.log("Listening: 480");
     });
 
-    q720.listen (port_720.port, ()=>{
+    q720.listen(port_720.port, () => {
         console.log("Listening: 720");
     });
 
-    q1080.listen (port_1080.port, ()=>{
+    q1080.listen(port_1080.port, () => {
         console.log("Listening: 1080");
     });
 
@@ -182,7 +179,7 @@ router.get('/play', async(req, res) => {
 });
 
 
-router.get('/change_quality', async  (req, res) => {
+router.get('/change_quality', async (req, res) => {
     let video = await Video.findOne({where: {id: req.query.id}});
 
     for (let up in usedPorts) {
@@ -196,42 +193,55 @@ router.get('/change_quality', async  (req, res) => {
 
 router.post('/removeclient', async (req, res) => {
 
-    let port = req.sanitize(req.body.port);
+    let port = JSON.parse(req.body.port);
     let id = req.sanitize(req.body.id);
 
     let video = await Video.findOne({where: {id: id}});
 
     for (let up in usedPorts) {
-        if (usedPorts[up].port === parseInt(port)) {
-            usedPorts[up].listeners--;
 
-            if (usedPorts[up].listeners < 1) {
+        switch (usedPorts[up].port) {
+            case parseInt(port.auto):
+                usedPorts[up].listeners--;
 
-                video.port = null;
+            case parseInt(port.q360):
+                usedPorts[up].listeners--;
 
-                video.save();
+            case parseInt(port.q480):
+                usedPorts[up].listeners--;
+                
+            case parseInt(port.q720):
+                usedPorts[up].listeners--;
 
-                usedPorts[up].server.close((err) => {
-                    console.log(err)
-                });
+            case parseInt(port.q1080):
+                usedPorts[up].listeners--;
 
-                usedPorts[up].server = null;
-
-                availablePorts.push(usedPorts[up]);
-
-                usedPorts.splice(up,1);
-
-            }
         }
 
+        if (usedPorts[up].listeners < 1) {
 
+            video.port = null;
+
+            video.save();
+
+            usedPorts[up].server.close((err) => {
+                console.log(err)
+            });
+
+            usedPorts[up].server = null;
+
+            availablePorts.push(usedPorts[up]);
+
+            usedPorts.splice(up, 1);
+
+        }
     }
 
     res.status(200).send();
 
 })
 
-router.get('/available_videos', async(req, res) => {
+router.get('/available_videos', async (req, res) => {
 
     let videos = await Video.findAll({
         attributes: ['id', 'name', 'port', 'status', 'createdAt'],
@@ -243,7 +253,7 @@ router.get('/available_videos', async(req, res) => {
 
 });
 
-router.post('/delete_video', async(req, res) => {
+router.post('/delete_video', async (req, res) => {
     let id = req.sanitize(req.body.id);
 
     let video = await Video.findOne({where: {id: id}});
@@ -266,7 +276,7 @@ router.post('/delete_video', async(req, res) => {
 
 });
 
-router.get('/preview', async(req, res) => {
+router.get('/preview', async (req, res) => {
 
     let previewPath = 'previews/' + req.query.id + '/preview.jpg';
 
