@@ -182,4 +182,25 @@ router.post('/delete_video', async(req, res) => {
 
     });
 
-})
+});
+
+router.get('/preview', async(req, res) => {
+
+    let previewPath = 'previews/' + req.query.id + '/preview.jpg';
+
+    let options = {
+        root: __dirname,
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true,
+        },
+    };
+
+    res.sendFile(previewPath, options, err => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Img sent successfully");
+        }
+    });
+});

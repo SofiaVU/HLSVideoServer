@@ -1,4 +1,5 @@
 import React from 'react';
+let querystring = require('querystring');
 export default class Player extends React.Component {
 
 
@@ -19,11 +20,18 @@ export default class Player extends React.Component {
     }
 
     render() {
+        let params = {
+            id: this.props.video.id,
+        };
+
+        params = querystring.stringify(params);
         return (
             <div className={"videoItem"} onClick={this._setCurrentVideo}>
                 <div className={"videoPreviewImg"}>
-                    {this.props.video.id}
+                    <img
+                        src={"http://localhost:8000/preview?" + params} className={"previewImg"} width={"200"}/>
                 </div>
+
                 <div className={"videoDelete"} onClick={this._deleteVideo}>
                     Delete
                 </div>
