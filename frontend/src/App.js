@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import Player from "./modules/Player";
 import Uploader from "./modules/Uploader";
 import Selector from "./modules/Selector";
+
 let querystring = require('querystring');
 
 
@@ -17,6 +18,7 @@ class App extends Component {
         this.componentDidMount = this.componentDidMount.bind(this);
         this._removeClientFromVideo = this._removeClientFromVideo.bind(this);
         this._getNewVideoPort = this._getNewVideoPort.bind(this);
+        this._deleteVideo = this._deleteVideo.bind(this);
 
         this.state = {
             playingVideo: null,
@@ -44,8 +46,11 @@ class App extends Component {
 
     async _setCurrentVideo(id) {
 
+
         if (this.state.playingVideo) {
-            this._removeClientFromVideo();
+            if(id !== this.state.playingVideo.id) {
+                this._removeClientFromVideo();
+            }
         }
 
         let video = await this._getNewVideoPort(id);
@@ -59,12 +64,34 @@ class App extends Component {
 
     }
 
+    async _deleteVideo(id) {
+
+        // if (id === this.state.playingVideo.id) {
+        //     alert("You cannot delete current video. Select another video and then proceed")
+        //     return;
+        // }
+
+        let deletedVideo = await fetch("http://localhost:8000/delete_video", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        });
+
+        if (deletedVideo){
+            alert("Video deleted!")
+        }
+    }
+
     async _removeClientFromVideo() {
 
         // Removing listener from current video
         let removeClient = await fetch("http://localhost:8000/removeclient", {
             method: "POST",
-            headers:{
+            headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -73,7 +100,7 @@ class App extends Component {
             })
         });
 
-        if(removeClient) {
+        if (removeClient) {
             console.log("Client removed");
         }
     }
@@ -85,7 +112,7 @@ class App extends Component {
         };
         params = querystring.stringify(params)
 
-        let video = await fetch ("http://localhost:8000/play?" + params, {
+        let video = await fetch("http://localhost:8000/play?" + params, {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -128,11 +155,12 @@ class App extends Component {
                 {this.state.playingVideo && <Player playingVideo={this.state.playingVideo}/>}
                 
                 <Uploader uploadVideo={this._uploadVideo}/>
-
+                
                 {this.state.availableVideos && 
                     <div class="grid-container">
                         <Selector availableVideos={this.state.availableVideos}
-                            setCurrentVideo={this._setCurrentVideo}/>
+                            setCurrentVideo={this._setCurrentVideo}
+                                deleteVideo={this._deleteVideo}/>
                     </div>
                 }
 
