@@ -26,6 +26,8 @@ class App extends Component {
             playingVideo: null,
             availableVideos: null
         }
+
+        console.log(this.state)
     }
 
     async _uploadVideo(form) {
