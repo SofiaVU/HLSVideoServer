@@ -43,7 +43,7 @@ export default class Uploader extends React.Component {
                     </div>
                     <div>
                         <button action="submit" className={"longButton"} onClick={this._uploadVideo}>Submit</button>
-                        <br></br><hr></hr>
+                        <br></br><br></br><br></br>
 
                     </div>
 

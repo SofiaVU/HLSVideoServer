@@ -1,4 +1,20 @@
 import React from 'react';
+
+var divStyle = {
+    display: "inline-block",
+    padding: "15px 25px",
+    fontSize: "16px",
+    cursor: "pointer",
+    textAlign: "center",
+    textDecoration: "none",
+    outline: "none",
+    color: "#fff",
+    backgroundColor: "#18CCDC",
+    border: "none",
+    borderRadius: "15px",
+    boxShadow: "0 9px #999"
+    
+} 
 let querystring = require('querystring');
 export default class Player extends React.Component {
 
@@ -32,7 +48,7 @@ export default class Player extends React.Component {
                         <img src={"http://localhost:8000/preview?" + params} className={"previewImg"} width={"400"}/>
                     </div>
                     <h4>{this.props.video.name}</h4>
-                    <button className={"videoDelete"} onClick={this._deleteVideo}>
+                    <button style={divStyle} className={"videoDelete"} onClick={this._deleteVideo}>
                         Delete
                     </button>
                 </div>

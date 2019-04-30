@@ -181,31 +181,43 @@ class App extends Component {
 
 
     render() {
-        return (
-            <div className="App">
-                <header>
-                    <ul>
-                        <li><a class="active" href="#home">Home</a></li>
-                        <li><a href="#news">Videos</a></li>
-                        <li><a href="#contact">Team</a></li>
-                        <li><a href="#about">About HLS</a></li>
-                    </ul>
-                </header>
-                
-                <Uploader uploadVideo={this._uploadVideo}/>
-                {this.state.playingVideo &&
-                    <Player playingVideo={this.state.playingVideo} setVideoQuality={this._setVideoQuality}/>}
-                
-                {this.state.availableVideos && 
-                    <div class="grid-container">
-                        <Selector availableVideos={this.state.availableVideos}
-                            setCurrentVideo={this._setCurrentVideo}
-                                deleteVideo={this._deleteVideo}/>
-                    </div>
-                }
-
-            </div>
-        );
+        if(this.state.availableVideos) {
+            return (
+                <div className="App">
+                    <header>
+                        <ul>
+                            <li><a class="active" href="#home">Home</a></li>
+                            <li><a href="#news">Videos</a></li>
+                            <li><a href="#contact">Team</a></li>
+                            <li><a href="#about">About HLS</a></li>
+                        </ul>
+                    </header>
+                    
+                    <Uploader uploadVideo={this._uploadVideo}/>
+                    {this.state.playingVideo &&
+                        <Player  style={{backgroundColor: "rgba(220, 220, 220, 0.8)"}} playingVideo={this.state.playingVideo} setVideoQuality={this._setVideoQuality}/>}
+                    
+                    {this.state.availableVideos && 
+                        <div class="grid-container">
+                            <Selector availableVideos={this.state.availableVideos}
+                                setCurrentVideo={this._setCurrentVideo}
+                                    deleteVideo={this._deleteVideo}/>
+                        </div>
+                    }    
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <header>
+                        <ul>
+                            <li><a class="active" href="#home"><b>HLS SERVER for IRAC by Group 26</b></a></li>
+                        </ul>
+                    </header>
+                    <div className="loaderWrapper"><div className="loader" /></div>
+                </div>);
+        }
+        
     }
 }
 

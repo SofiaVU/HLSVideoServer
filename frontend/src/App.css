@@ -20,7 +20,7 @@ ul {
   }
 
   li a:hover {
-  background-color: #111;
+  background-color: #18CCDC;
   }
   .grid-container {
     display: grid;
@@ -35,6 +35,8 @@ ul {
     font-size: 30px;
     text-align: center;
   }
+
+  
 
 .App {
   text-align: center;
@@ -68,4 +70,26 @@ ul {
   to {
     transform: rotate(360deg);
   }
+}
+
+.loader {
+  border: 16px solid #333; /* Light grey */
+  border-top: 16px solid #18CCDC; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  top: 50vh;
+  left: 50vh;
+  display: inline-block;
+}
+
+.loaderWrapper {
+  text-align: center;
+  padding-top: 30vh;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
