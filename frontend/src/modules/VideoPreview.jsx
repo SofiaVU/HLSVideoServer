@@ -13,7 +13,7 @@ export default class Player extends React.Component {
     }
 
     _setCurrentVideo() {
-        this.props.setCurrentVideo(this.props.video.id);
+        this.props.setCurrentVideo(this.props.video);
     }
     _deleteVideo(){
         this.props.deleteVideo(this.props.video.id);
@@ -31,6 +31,7 @@ export default class Player extends React.Component {
                     <img
                         src={"http://localhost:8000/preview?" + params} className={"previewImg"} width={"200"}/>
                 </div>
+                <div className={"videoName"}>{this.props.video.name}</div>
 
                 <div className={"videoDelete"} onClick={this._deleteVideo}>
                     Delete

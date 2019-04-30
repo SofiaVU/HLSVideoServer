@@ -52,7 +52,7 @@ export default class Player extends React.Component {
 
         return (
             <div id={"playerWrapper"}>
-                <h1>Now playing: Test</h1>
+                <h1>Now playing: {this.props.playingVideo.name}</h1>
                 <ReactHLS url={url} height={290}/>
                 <div className={"qualitySelector"}>
                     <div className={"qualityItem"} onClick={this._setAuto}>AUTO</div>

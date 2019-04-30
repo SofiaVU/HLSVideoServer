@@ -10,8 +10,8 @@ export default class Player extends React.Component {
         this._deleteVideo = this._deleteVideo.bind(this);
     }
 
-    _setCurrentVideo(id) {
-        this.props.setCurrentVideo(id);
+    _setCurrentVideo(video) {
+        this.props.setCurrentVideo(video);
     }
 
     _deleteVideo(id) {
