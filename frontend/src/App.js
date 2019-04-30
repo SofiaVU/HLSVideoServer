@@ -46,22 +46,23 @@ class App extends Component {
 
     }
 
-    async _setCurrentVideo(id) {
+    async _setCurrentVideo(video) {
 
         if (this.state.playingVideo) {
-            if (id !== this.state.playingVideo.id) {
+            if (video.id !== this.state.playingVideo.id) {
                 this._removeClientFromVideo();
             }
         }
 
-        let video = await this._getNewVideoPort(id);
+        let videoPort = await this._getNewVideoPort(video.id);
 
         this.setState({
             playingVideo: {
-                id: id,
-                port: video,
+                id: video.id,
+                name: video.name,
+                port: videoPort,
                 quality: "auto",
-                url: "http://localhost:" + video.auto + "/play"
+                url: "http://localhost:" + videoPort.auto + "/play"
             }
         })
 

@@ -79,7 +79,7 @@ export default class Player extends React.Component {
                 {close => (
                 <div id={"playerWrapper"}>
                     <a className="close" onClick={close}>(x)</a>
-                    <h1>Now playing: Test{this.props.playingVideo.name}</h1>
+                    <h1>Now playing: {this.props.playingVideo.name}</h1>
                     <ReactHLS url={url} height={290}/>
                     <div className={"qualitySelector"}>
                         <p>Choose quality: </p>

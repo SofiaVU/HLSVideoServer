@@ -29,7 +29,7 @@ export default class Player extends React.Component {
     }
 
     _setCurrentVideo() {
-        this.props.setCurrentVideo(this.props.video.id);
+        this.props.setCurrentVideo(this.props.video);
     }
     _deleteVideo(){
         this.props.deleteVideo(this.props.video.id);
