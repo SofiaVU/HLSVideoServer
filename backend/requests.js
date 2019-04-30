@@ -44,8 +44,6 @@ router.post('/upload', async (req, res) => {
 
     });
 
-    res.send(500)
-
 
 });
 
@@ -178,18 +176,6 @@ router.get('/play', async (req, res) => {
 
 });
 
-
-router.get('/change_quality', async (req, res) => {
-    let video = await Video.findOne({where: {id: req.query.id}});
-
-    for (let up in usedPorts) {
-        if (usedPorts[up].port === parseInt(video.port)) {
-
-            //Matar 
-
-        }
-    }
-});
 
 router.post('/removeclient', async (req, res) => {
 
