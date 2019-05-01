@@ -5,6 +5,8 @@ let expressSanitizer = require('express-sanitizer');
 import {router} from "./requests";
 import {createServer} from 'http';
 
+let fs = require('fs');
+
 // Creating router for handling video requests
 let app = express();
 export let server = createServer(app);
@@ -42,8 +44,38 @@ app.use(function(req, res, next) {
     next();
 });
 
-// DB
+// Create folders
+fs.access('streams', err => {
+    if (err) {
+        fs.mkdir('streams', err2 => {
+            console.log(err2);
+        });
+    }
+});
 
+fs.access('videos', err => {
+    if (err) {
+        fs.mkdir('videos', err2 => {
+            console.log(err2);
+        });
+    }
+});
+
+fs.access('previews', err => {
+    if (err) {
+        fs.mkdir('previews', err2 => {
+            console.log(err2);
+        });
+    }
+});
+
+fs.access('db', err => {
+    if (err) {
+        fs.mkdir('db', err2 => {
+            console.log(err2);
+        });
+    }
+});
 
 
 //Router listening
